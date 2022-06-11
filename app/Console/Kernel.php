@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('cron:truncate users')->cron('0 0 * * *');
+        $schedule->command('cron:truncate votes')->dailyAt('00:15')->timezone(config('app.timezone'));
     }
 
     /**

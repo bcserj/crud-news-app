@@ -31,9 +31,9 @@ class CronTruncate extends Command
         $table = $this->argument("table");
 
         if (Schema::hasTable($table)) {
-            info('['.now().'] Start cron job: truncate '.$table);
+            info('[' . now() . '] Start cron job: truncate ' . $table);
             DB::table($table)->truncate();
-            info('['.now().'] End cron job: truncate '.$table);
+            info('[' . now() . '] End cron job: truncate ' . $table);
         }
         return 0;
     }

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends ApiController
 {
-
     public function signin(Request $request)
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {

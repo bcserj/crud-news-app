@@ -8,7 +8,6 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 
-
 class PostController extends ApiController
 {
     private EloquentPostRepository $postRepository;

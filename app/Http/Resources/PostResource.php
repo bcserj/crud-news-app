@@ -25,6 +25,10 @@ class PostResource extends JsonResource
             $data['upvotes'] = $this->votes->count();
         }
 
+        if ($this->relationLoaded('comments')) {
+            $data['comments'] = $this->comments->count();
+        }
+
         if ($this->relationLoaded('user')) {
             $data['author_name'] = $this->user->name;
         }

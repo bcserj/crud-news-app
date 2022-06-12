@@ -21,7 +21,7 @@ class PostController extends ApiController
     {
         return $this->successResponse(
             PostResource::collection(
-                $this->postRepository->all(['user', 'votes'])
+                $this->postRepository->paginate()
             )
         );
     }

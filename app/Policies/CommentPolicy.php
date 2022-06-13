@@ -19,8 +19,8 @@ class CommentPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\User    $user
+     * @param  \App\Models\Comment $comment
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Comment $comment)
@@ -31,8 +31,8 @@ class CommentPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\User    $user
+     * @param  \App\Models\Comment $comment
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Comment $comment)

@@ -2,12 +2,6 @@
 
 namespace App\Query\Filters;
 
-use App\Query\Filter;
-
-class UserId extends Filter
+class UserId extends BaseFilter
 {
-    protected function applyFilter($builder)
-    {
-        return $builder->where($this->filterName(), request($this->filterName()));
-    }
 }

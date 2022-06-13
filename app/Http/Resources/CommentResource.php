@@ -9,7 +9,7 @@ class CommentResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -22,6 +22,13 @@ class CommentResource extends JsonResource
         if ($this->relationLoaded('user')) {
             $data = array_merge(
                 ['author_name' => $this->user->name],
+                $data
+            );
+        }
+
+        if ($this->relationLoaded('post')) {
+            $data = array_merge(
+                ['post_id' => $this->post->id],
                 $data
             );
         }

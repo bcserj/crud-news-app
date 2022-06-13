@@ -21,24 +21,24 @@ class PostController extends ApiController
     {
         return $this->successResponse(
             PostResource::collection(
-                $this->postRepository->paginate()
+                $this->postRepository->throughPipeline()->paginate()
             )
         );
     }
 
     /**
-     * @param $postId
+     * @param  $postId
      * @return JsonResponse
      */
-    public function show(Post $post): JsonResponse
+    public function show($postId): JsonResponse
     {
         return $this->successResponse(
-            new PostResource($post->load(['user', 'votes']))
+            new PostResource($this->postRepository->throughPipeline()->findById($postId))
         );
     }
 
     /**
-     * @param  PostRequest  $postStoreRequest
+     * @param  PostRequest $postStoreRequest
      * @return JsonResponse
      */
     public function store(PostRequest $postStoreRequest): JsonResponse
@@ -53,9 +53,7 @@ class PostController extends ApiController
 
             if ($data = $user->posts()->save($post)) {
                 return $this->successResponse(
-                    new PostResource(
-                        $data->load(['user'])
-                    )
+                    new PostResource($this->postRepository->throughPipeline()->findById($data->id))
                 );
             }
         }
@@ -64,12 +62,13 @@ class PostController extends ApiController
     }
 
     /**
-     * @param  PostRequest  $request
+     * @param  PostRequest $request
      * @param  $postId
      * @return JsonResponse
      */
-    public function update(PostRequest $request, Post $post): JsonResponse
+    public function update(PostRequest $request, $postId): JsonResponse
     {
+        $post = $this->postRepository->throughPipeline()->findById($postId);
         if (
             auth()->check()
             && auth()->user()->can('update', $post)
@@ -79,7 +78,7 @@ class PostController extends ApiController
             if ($post->update($credentials)) {
                 return $this->successResponse(
                     new PostResource(
-                        $post->load(['user', 'votes'])
+                        $post
                     )
                 );
             }
@@ -89,11 +88,13 @@ class PostController extends ApiController
     }
 
     /**
-     * @param $postId
+     * @param  $postId
      * @return JsonResponse
      */
-    public function delete(Post $post)
+    public function delete($postId)
     {
+        $post = $this->postRepository->findById($postId);
+
         if (
             auth()->check()
             && auth()->user()->can('delete', $post)

@@ -61,8 +61,8 @@ class User extends Authenticatable
     }
 
     /**
-     * @param  Builder  $query
-     * @param $email
+     * @param  Builder $query
+     * @param  $email
      * @return Builder
      */
     public function scopeWithEmail(Builder $query, string $email): Builder

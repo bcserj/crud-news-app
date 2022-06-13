@@ -9,11 +9,22 @@ class EloquentCommentRepository extends EloquentBaseRepository
 {
     public function __construct(Comment $comment)
     {
-        $this->model = $comment;
+        parent::__construct($comment);
     }
 
-    public function allByPost($postId): ?Collection
+    protected function pipelines(): array
     {
-        return $this->model->with(['user'])->where('post_id', $postId)->get();
+        return [
+            \App\Query\Relations\User::class,
+            \App\Query\Relations\Post::class,
+            \App\Query\Sort\Id::class,
+            \App\Query\Filters\MaxCount::class
+        ];
+    }
+
+    public function findByPostId($postId): ?Collection
+    {
+        $builder = ($this->usePipelines) ? $this->getPipelineQuery() : $this->model;
+        return $builder->where('post_id', $postId)->get();
     }
 }

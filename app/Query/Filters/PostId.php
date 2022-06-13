@@ -2,12 +2,6 @@
 
 namespace App\Query\Filters;
 
-use App\Query\Filter;
-
-class PostId extends Filter
+class PostId extends BaseFilter
 {
-    protected function applyFilter($builder)
-    {
-        return $builder->where($this->filterName(), request($this->filterName()));
-    }
 }

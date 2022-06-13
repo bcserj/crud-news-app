@@ -7,7 +7,7 @@ use App\Models\Post;
 class PostObserver
 {
     /**
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Post $post
      * @return void
      */
     public function creating(Post $post)

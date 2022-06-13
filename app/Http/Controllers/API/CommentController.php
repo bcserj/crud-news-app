@@ -22,7 +22,7 @@ class CommentController extends ApiController
      */
     public function index($postId): \Illuminate\Http\JsonResponse
     {
-        $commentsCollection = $this->commentRepository->allByPost($postId);
+        $commentsCollection = $this->commentRepository->throughPipeline()->findByPostId($postId);
         return $this->successResponse(
             CommentResource::collection(
                 $commentsCollection
@@ -31,19 +31,19 @@ class CommentController extends ApiController
     }
 
     /**
-     * @param $postId
-     * @param  \App\Models\Comment  $comment
+     * @param  $postId
+     * @param  $commentId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($postId, Comment $comment)
+    public function show($postId, $commentId)
     {
         return $this->successResponse(
-            new CommentResource($comment)
+            new CommentResource($this->commentRepository->throughPipeline()->findById($commentId))
         );
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(CommentRequest $request, Post $post)
@@ -68,22 +68,20 @@ class CommentController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  CommentRequest  $request
-     * @param $postId
-     * @param  \App\Models\Comment  $comment
+     * @param  CommentRequest      $request
+     * @param  $postId
+     * @param  \App\Models\Comment $comment
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(CommentRequest $request, $postId, Comment $comment)
     {
-        $status = false;
-
         if (
             auth()->check()
             && auth()->user()->can('update', $comment)
         ) {
-            if ($comment->update($request->only(['comment']))) {
+            if ($comment->update($request->only(['content']))) {
                 return $this->successResponse(
-                    new CommentResource($comment->load('user'))
+                    new CommentResource($this->commentRepository->throughPipeline()->findById($comment->id))
                 );
             }
         }
@@ -92,14 +90,12 @@ class CommentController extends ApiController
     }
 
     /**
-     * @param $postId
-     * @param  \App\Models\Comment  $comment
+     * @param  $postId
+     * @param  \App\Models\Comment $comment
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete($postId, Comment $comment)
     {
-        $status = false;
-
         if (
             auth()->check()
             && auth()->user()->can('delete', $comment)

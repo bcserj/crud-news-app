@@ -2,6 +2,6 @@
 
 namespace App\Query\Relations;
 
-class Votes extends BaseRelation
+class Post extends BaseRelation
 {
 }

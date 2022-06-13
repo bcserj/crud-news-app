@@ -2,17 +2,12 @@
 
 namespace App\Query\Filters;
 
-use App\Query\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
-class MaxCount extends Filter
+class MaxCount extends BaseFilter
 {
-    protected function applyFilter($builder)
+    protected function applyAction($builder): Builder
     {
-        return $builder->take(request($this->filterName()));
-    }
-
-    public function value()
-    {
-        return request($this->filterName());
+        return $builder->take(request($this->actionName()));
     }
 }

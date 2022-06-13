@@ -24,12 +24,15 @@ class AuthController extends ApiController
 
     public function signup(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make(
+            $request->all(),
+            [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:5',
             'confirm_password' => 'required|same:password',
-        ]);
+            ]
+        );
 
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors()->toArray(), 'Error validation');

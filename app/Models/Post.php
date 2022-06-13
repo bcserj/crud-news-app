@@ -33,8 +33,8 @@ class Post extends Model
     }
 
     /**
-     * @param  Builder  $query
-     * @param $userId
+     * @param  Builder $query
+     * @param  $userId
      * @return Builder
      */
     public function scopeFilterByUser(Builder $query, $userId): Builder

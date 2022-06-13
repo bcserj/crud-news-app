@@ -2,12 +2,6 @@
 
 namespace App\Query\Relations;
 
-use App\Query\Filter;
-
-class User extends Filter
+class User extends BaseRelation
 {
-    protected function applyFilter($builder)
-    {
-        return $builder->with($this->filterName());
-    }
 }
